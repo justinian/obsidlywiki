@@ -38,8 +38,9 @@ def translate_article(src, dest):
 
 
 def public_image(path):
+    p = str(path)
     for prefix in ("images","maps"):
-        if path.startswith(prefix): return True
+        if p.startswith(prefix): return True
     return False
 
 
@@ -57,7 +58,8 @@ def convert(input, output):
 
     def files(ext):
         from glob import glob
-        return glob(f"**/*.{ext}", root_dir=input, recursive=True)
+        fs = glob(f"{input}/**/*.{ext}", recursive=True)
+        return [Path(f).relative_to(input) for f in fs]
 
     for f in files("md"):
         dest = output / f
